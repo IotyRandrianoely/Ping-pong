@@ -12,6 +12,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 import network.Server;
 import network.Client;
@@ -27,7 +30,7 @@ public class GameEngine {
     private volatile String lastState; // latest network state
     private volatile double lastClientRacketX = -1; // reçu par le serveur
 
-    public GameEngine(boolean isServer, double racketStartX, double ballStartAngle) {
+    public GameEngine(boolean isServer, double racketStartX, double ballStartAngle, Runnable onClientConnected) {
         this.isServer = isServer;
 
         // Fenêtre
@@ -89,6 +92,10 @@ public class GameEngine {
             try {
                 if (isServer) {
                     server = new Server(5000);
+                    // Notifier la connexion du client
+                    if (onClientConnected != null) {
+                        Platform.runLater(onClientConnected);
+                    }
                     // receive client inputs
                     new Thread(() -> {
                         try {
