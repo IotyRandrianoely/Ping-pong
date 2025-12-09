@@ -12,6 +12,7 @@ public class Server {
     private DataOutputStream out;
 
     public Server(int port) throws IOException {
+
         try {
             System.out.println("=== SERVEUR ===");
             System.out.println("1. Création du ServerSocket sur le port " + port + "...");
@@ -40,6 +41,8 @@ public class Server {
             e.printStackTrace();
             throw e;
         }
+
+       
     }
 
     public void send(String msg) throws IOException {

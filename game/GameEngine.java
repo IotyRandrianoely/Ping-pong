@@ -112,6 +112,7 @@ public class GameEngine {
                 } else {
                     // TODO: replace with the actual server IP when running on PC2
                     client = new Client("10.252.114.95", 5000); 
+                    // client = new Client("10.252.114.84", 5000); 
                     new Thread(() -> {
                         try {
                             while (true) {
@@ -149,15 +150,29 @@ public class GameEngine {
                 // server runs physics
                 if (ball != null) {
                     ball.update();
-                    // collisions bas (serveur) et haut (client)
-                    if (ball.y + 20 >= 550 && ball.x + 20 >= racket.x && ball.x <= racket.x + 100) {
-                        ball.dy *= -1;
+
+                    // collision bas (raquette serveur)
+                    if (ball.y + 20 >= 550 && ball.y + 20 <= 570
+                        && ball.x + 20 >= racket.x && ball.x <= racket.x + 100) {
+                        // point d'impact relatif [-0.5..0.5]
+                        double hit = ((ball.x + 10) - (racket.x + 50)) / 100.0;
                         ball.y = 550 - 20;
+                        ball.dy = -Math.abs(ball.dy);
+                        ball.dx += hit * 3; // léger effet d'angle
                     }
-                    if (ball.y <= 30 && ball.x + 20 >= remoteRacket.x && ball.x <= remoteRacket.x + 100) {
-                        ball.dy *= -1;
+
+                    // collision haut (raquette client)
+                    if (ball.y <= 30 && ball.y >= 10
+                        && ball.x + 20 >= remoteRacket.x && ball.x <= remoteRacket.x + 100) {
+                        double hit = ((ball.x + 10) - (remoteRacket.x + 50)) / 100.0;
                         ball.y = 30;
+                        ball.dy = Math.abs(ball.dy);
+                        ball.dx += hit * 3;
                     }
+
+                    // limites haut/bas si raté (sorties)
+                    if (ball.y < 0) { ball.y = 0; ball.dy = Math.abs(ball.dy); }
+                    if (ball.y > 600 - 20) { ball.y = 600 - 20; ball.dy = -Math.abs(ball.dy); }
                 }
                 // broadcast state every frame so client animates in sync
                 String state = "BALL;" + (ball != null ? ball.x : -1) + ";" + (ball != null ? ball.y : -1)
