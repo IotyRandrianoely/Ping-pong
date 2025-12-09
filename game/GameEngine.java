@@ -111,7 +111,7 @@ public class GameEngine {
                     }, "Net-Server-Reader").start();
                 } else {
                     // TODO: replace with the actual server IP when running on PC2
-                    client = new Client("192.168.1.10", 5000); 
+                    client = new Client("10.252.114.95", 5000); 
                     new Thread(() -> {
                         try {
                             while (true) {
