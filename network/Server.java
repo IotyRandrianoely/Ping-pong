@@ -12,7 +12,7 @@ public class Server {
     private DataOutputStream out;
 
     public Server(int port) throws IOException {
-        serverSocket = new ServerSocket(port);
+        serverSocket = new ServerSocket(port, 1, InetAddress.getByName("0.0.0.0"));
         client = serverSocket.accept();
         in = new DataInputStream(client.getInputStream());
         out = new DataOutputStream(client.getOutputStream());
