@@ -17,8 +17,12 @@ public class Ball {
         x += dx;
         y += dy;
 
-        if (x < 0 || x > terrainWidth - 20) dx *= -1;
-        if (y < 0 || y > terrainHeight - 20) dy *= -1;
+        // Rebonds murs gauche/droite
+        if (x < 0) { x = 0; dx *= -1; }
+        if (x > terrainWidth - 20) { x = terrainWidth - 20; dx *= -1; }
+
+        // Ne pas gérer haut/bas ici: c'est la raquette qui rebondit dans GameEngine
+        // if (y < 0 || y > terrainHeight - 20) dy *= -1;
     }
 
     public void draw(GraphicsContext gc) {
