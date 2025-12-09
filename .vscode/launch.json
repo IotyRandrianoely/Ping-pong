@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+      {
+        "type": "java",
+        "name": "Lancer JavaFX",
+        "request": "launch",
+        "mainClass": "Main",
+        "vmArgs": "--module-path \"C:/javafx/lib\" --add-modules javafx.controls,javafx.fxml",
+        "classpath": [
+          "C:/javafx/lib/*.jar"
+        ]
+      }
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic"
+}
